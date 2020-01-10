@@ -1,7 +1,8 @@
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template.loader import get_template
-from .forms import ContactForm
+from .forms import ContactForm, LoginForm
 import random
 
 def home_page(request):
@@ -35,10 +36,21 @@ def tracksuits_page(request):
 	return render(request, 'home_page.html', context)
 
 def login_page(request):
-	return render(request, "auth/login.html", {})
+	form = LoginForm(request.POST or None)
+	context = {
+	"form": form
+	}
+	return render(request, "auth/login.html", context)
 
 def register_page(request):
-	return render(request, "auth/login.html", {})
+	form = loginForm(request.POST or None)
+	if form.is_valid():
+		print(form.cleaned_data)
+	context = {
+	"form": form,
+	}
+
+	return render(request, "auth/login.html", {context})
 
 def contact_page(request):
 	contact_form = ContactForm(request.POST or None)
