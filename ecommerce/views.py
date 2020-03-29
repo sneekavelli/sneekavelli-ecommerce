@@ -1,9 +1,18 @@
-
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.loader import get_template
-from .forms import ContactForm, LoginForm
+from .forms import (ContactForm, LoginForm, RegisterForm)
 import random
+
+
+
+
+
+
+
+
 
 def home_page(request):
 	context ={
@@ -12,8 +21,12 @@ def home_page(request):
 	"premium_content": "YEEAAAHH",
 	'n': random.random()
 
+
 		}
+    ### if request.user.isauthenticated
+
 	return render(request, 'home_page.html' , context)
+
 
 
 
@@ -23,7 +36,7 @@ def exclusive_page(request):
 	"content": "Check out the latest exclusive items",
 	}
 	return render(request, 'home_page.html' , context)
-    
+	
 
 
 
@@ -36,21 +49,33 @@ def tracksuits_page(request):
 	return render(request, 'home_page.html', context)
 
 def login_page(request):
+	next = request.GET.get('next')
 	form = LoginForm(request.POST or None)
+
+	if form.is_valid():
+		username = form.cleaned_data.get('username')
 	context = {
 	"form": form
 	}
+	
+	
 	return render(request, "auth/login.html", context)
 
-def register_page(request):
-	form = loginForm(request.POST or None)
-	if form.is_valid():
-		print(form.cleaned_data)
-	context = {
-	"form": form,
-	}
+def register_page(response):
+	if response.method == "POST":
+		form = RegisterForm(response.POST)
+		if form.is_valid():
+			form.save()
+		return redirect("/home")
+	else:
+		 form = RegisterForm()
 
-	return render(request, "auth/login.html", {context})
+	#form = RegisterForm(request.POST or None)
+	#if form.is_valid():
+	 #	print(form.cleaned_data)
+  
+
+	return render(response, "auth/register.html", {"form":form})
 
 def contact_page(request):
 	contact_form = ContactForm(request.POST or None)
@@ -73,7 +98,7 @@ def contact_page(request):
 
 
 
-    
+	
 
 
 

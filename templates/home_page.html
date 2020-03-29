@@ -1,4 +1,8 @@
+
 <!doctype html>
+
+{% load static %}
+
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -7,6 +11,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href='/static/css/base.css'/>
 
     <title>Humble Hotheads Home Page</title>
   </head>
@@ -16,16 +21,15 @@
             <div class='col-6 mx-auto'>
                   <h1>{{ n|floatformat }} {{ title }}</h1>
                    <h2> Join the Humble Hothead Army! </h2>
+                    <img src="{% static 'img/.HHHjpg' %}" class='img-fluid' />
             <p> {{content}}</p>
             <div class='col-sm-6 col-12'>
-            <form method="POST"> { % crsf_token %}
-              <input type='text' placeholder="Name" name ='fullname'>
-              <button type='submit' class='btn btn-default'>Submit</button>
             </div>
+
 
         </div>
     </div>
-  
+
     <div class='container'>
     <div class='row'>
     <div class='col'>
